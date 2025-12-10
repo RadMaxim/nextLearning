@@ -1,15 +1,9 @@
 // RegistrationForm.tsx
 "use client"
-import React, { useState } from "react";
-import {
-    Box,
-    Button,
-    TextField,
-    Typography,
+import React, {useCallback, useState} from "react";
 
-    Alert
-} from "@mui/material";
-import {registerUser} from "@/app/actions/register";
+import RegistrationFormDump from "@/app/components/RegistrationForm/RegistrationFormDump";
+import {useRegisterUser} from "@/app/service/useRegisterUser";
 
 const RegistrationForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -18,23 +12,23 @@ const RegistrationForm: React.FC = () => {
         password: "",
         confirmPassword: ""
     });
-
+    const mutation = useRegisterUser();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
-    };
+    },[setFormData,formData])
 
-    const handleSubmit =async (e: React.FormEvent) => {
+    const handleSubmit =useCallback((e: React.FormEvent) => {
         e.preventDefault();
         setError("");
         setSuccess("");
-        const data =  registerUser(formData)
-        console.log(data)
+
+
         if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
             setError("Все поля обязательны для заполнения");
             return;
@@ -44,80 +38,25 @@ const RegistrationForm: React.FC = () => {
             setError("Пароли не совпадают");
             return;
         }
+        mutation.mutate({
+            email: formData.email,
+            password: formData.password,
+        });
+
+        if (mutation.isSuccess) {
+            setSuccess("Регистрация прошла успешно!");
+        }
+        if (mutation.isError) {
+            setError("Ошибка при регистрации");
+        }
 
         // Здесь можно добавить отправку данных на сервер
         setSuccess("Регистрация прошла успешно!");
         console.log("Данные формы:", formData);
-    };
+    },[formData])
 
     return (
-        <Box
-            sx={{
-                maxWidth: 400,
-                mx: "auto",
-                mt: 5,
-                p: 3,
-                border: "1px solid #ccc",
-                borderRadius: 2,
-                boxShadow: 2
-            }}
-        >
-            <Typography variant="h5" component="h1" gutterBottom>
-                Регистрация
-            </Typography>
-
-            {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-            {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-
-            <form onSubmit={handleSubmit}>
-                <Box >
-                    <Box>
-                        <TextField
-                            fullWidth
-                            label="Имя"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                        />
-                    </Box>
-                    <Box>
-                        <TextField
-                            fullWidth
-                            label="Email"
-                            name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
-                    </Box>
-                    <Box>
-                        <TextField
-                            fullWidth
-                            label="Пароль"
-                            name="password"
-                            type="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                        />
-                    </Box>
-                    <Box>
-                        <TextField
-                            fullWidth
-                            label="Подтверждение пароля"
-                            name="confirmPassword"
-                            type="password"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                        />
-                    </Box>
-                    <Box>
-                        <Button type="submit" variant="contained" color="primary" fullWidth>
-                            Зарегистрироваться
-                        </Button>
-                    </Box>
-                </Box>
-            </form>
-        </Box>
+        <RegistrationFormDump formData={formData} handleChange={handleChange} success={success} error={error} handleSubmit={handleSubmit}/>
     );
 };
 
