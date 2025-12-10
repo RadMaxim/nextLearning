@@ -1,5 +1,5 @@
 "use client"
-
+import "./globals.css"
 
 import RootLayout from "@/app/layout";
 import RegistrationForm from "@/app/components/RegistrationForm/RegistrationForm";
