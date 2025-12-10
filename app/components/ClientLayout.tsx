@@ -21,6 +21,8 @@ const ClientLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     });
 
     return (
+        <html lang="ru">
+        <body >
         <ThemeProvider theme={theme}>
 
 
@@ -34,7 +36,8 @@ const ClientLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
 
         </ThemeProvider>
-
+        </body>
+        </html>
     );
 };
 

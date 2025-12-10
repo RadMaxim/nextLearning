@@ -1,18 +1,19 @@
 "use client"
 import "./globals.css"
 
-import RootLayout from "@/app/layout";
 import RegistrationForm from "@/app/components/RegistrationForm/RegistrationForm";
 import QueryProvider from "@/app/components/providers/QueryProvider";
+import {Box} from "@mui/material";
 
 export default function Home() {
   return (
       <html lang="en">
-      <body>
+      <body >
 <QueryProvider>
-      <RootLayout>
-   <RegistrationForm/>
-      </RootLayout>
+    <Box sx={{ height: "calc(100vh - 8rem)" }}>
+        <RegistrationForm/>
+    </Box>
+
 </QueryProvider>
       </body>
       </html>

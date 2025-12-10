@@ -6,18 +6,12 @@ import {Box, Typography} from "@mui/material";
 import {usePathname} from "next/navigation";
 import {match} from 'path-to-regexp'
 import ItemNav from "@/app/components/Header/componentsHeader/ItemNav/ItemNav";
-const navigation = [
-    { href: "/", name: "Главная" },
-    { href: "/about", name: "О нас" },
-    { href: "/services", name: "Услуги" },
-    { href: "/blog", name: "Блог" },
-    { href: "/contact", name: "Контакты" },
-];
+import {navigation} from "@/app/components/Header/navigation";
+
 
  const Header = () => {
 
     const location = usePathname()
-     console.log(location)
 
     return(
 
