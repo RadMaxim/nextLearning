@@ -1,62 +1,50 @@
 // RegistrationForm.tsx
 "use client"
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useReducer} from "react";
 
 import RegistrationFormDump from "@/app/components/RegistrationForm/RegistrationFormDump";
 import {useRegisterUser} from "@/app/service/useRegisterUser";
+import {initialState, reducer} from "@/app/components/RegistrationForm/reducerRegistrtion";
 
 const RegistrationForm: React.FC = () => {
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-    });
+    const [state, dispatch] = useReducer(reducer, initialState);
     const mutation = useRegisterUser();
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    },[setFormData,formData])
+        dispatch({ type: "CHANGE", field: e.target.name, value: e.target.value });
+    },[])
 
-    const handleSubmit =useCallback((e: React.FormEvent) => {
+    const handleSubmit =useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
-        setError("");
-        setSuccess("");
+        dispatch({ type: "ERROR", message: "" });
+        dispatch({ type: "SUCCESS", message: "" });
+        const { name, email, password, confirmPassword } = state.formData;
 
-
-        if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-            setError("Все поля обязательны для заполнения");
+        if (!name || !email || !password || !confirmPassword) {
+            dispatch({ type: "ERROR", message: "Все поля обязательны для заполнения" });
             return;
         }
 
-        if (formData.password !== formData.confirmPassword) {
-            setError("Пароли не совпадают");
+        if (password !== confirmPassword) {
+            dispatch({ type: "ERROR", message: "Пароли не совпадают" });
             return;
         }
         mutation.mutate({
-            email: formData.email,
-            password: formData.password,
+            email,
+            password,
+        },{
+            onSuccess: () => {
+                dispatch({ type: "SUCCESS", message: "Регистрация прошла успешно!" });
+            },
+            onError: () => {
+                dispatch({ type: "ERROR", message: "Ошибка при регистрации" });
+            },
         });
 
-        if (mutation.isSuccess) {
-            setSuccess("Регистрация прошла успешно!");
-        }
-        if (mutation.isError) {
-            setError("Ошибка при регистрации");
-        }
-
-        // Здесь можно добавить отправку данных на сервер
-        setSuccess("Регистрация прошла успешно!");
-        console.log("Данные формы:", formData);
-    },[formData])
+    },[state.formData, mutation])
 
     return (
-        <RegistrationFormDump formData={formData} handleChange={handleChange} success={success} error={error} handleSubmit={handleSubmit}/>
+        <RegistrationFormDump formData={state.formData} handleChange={handleChange} success={state.success} error={state.error} handleSubmit={handleSubmit}/>
     );
 };
 

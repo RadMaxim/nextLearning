@@ -1,11 +1,11 @@
 "use client";
 
 // hooks/useRegisterUser.ts
-import { useMutation } from "react-query";
-import { registerUser } from "@/app/actions/register";
+import {useMutation} from "react-query";
+import {registerUser} from "@/app/actions/register";
 
 export function useRegisterUser() {
-    const mutation = useMutation({
+    return useMutation({
         mutationFn: registerUser,
         onSuccess: (data) => {
             console.log("Пользователь создан:", data);
@@ -14,6 +14,4 @@ export function useRegisterUser() {
             console.error("Ошибка при регистрации:", err);
         },
     });
-
-    return mutation;
 }
