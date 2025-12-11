@@ -5,7 +5,7 @@ import React from "react";
 import {ThemeProvider, createTheme, CssBaseline} from "@mui/material";
 import Header from "@/app/components/Header/Header";
 import Footer from "@/app/components/Footer/Footer";
-import {useThemeStore} from "@/app/store/useThemeStore";
+import {useThemeStore} from "@/app/components/stores/themeStore";
 
 
 

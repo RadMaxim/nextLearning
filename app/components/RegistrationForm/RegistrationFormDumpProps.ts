@@ -21,11 +21,12 @@ export interface RegistrationFormDumpProps {
 
 }
 export const sxBox ={
-    maxWidth: 400,
+    maxWidth: "clamp(400px, 40%, 600px)",
     mx: "auto",
-    mt: 5,
+    height: "90%",
     p: 3,
     border: "1px solid #ccc",
     borderRadius: 2,
-    boxShadow: 2
+    boxShadow: 2,
+
 }
