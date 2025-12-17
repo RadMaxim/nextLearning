@@ -1,7 +1,7 @@
 "use client";
 
 // hooks/useRegisterUser.ts
-import {useMutation} from "react-query";
+import {useMutation} from "@tanstack/react-query";
 import {registerUser} from "@/app/actions/register";
 
 export function useRegisterUser() {

@@ -1,6 +1,7 @@
 "use client";
 
-import { create } from "zustand";
+
+import {create} from "zustand/react";
 
 type ThemeState = {
     mode: "light" | "dark";

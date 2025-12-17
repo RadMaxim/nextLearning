@@ -2,13 +2,14 @@
 import React from "react";
 import {
     Box,
-    Button,
     TextField,
     Typography,
     Alert
 } from "@mui/material";
-import { RegistrationFormDumpProps, sxBox } from "@/app/components/RegistrationForm/RegistrationFormDumpProps";
+import { signIn } from "next-auth/react";
+import {RegistrationFormDumpProps, sxBox} from "@/app/components/RegistrationForm/RegistrationFormDumpProps";
 import {fields} from "@/app/components/RegistrationForm/fields";
+import {Button} from "@/shared/components/ui/button";
 
 const RegistrationFormDump: React.FC<RegistrationFormDumpProps> = ({
                                                                        error,
@@ -18,7 +19,18 @@ const RegistrationFormDump: React.FC<RegistrationFormDumpProps> = ({
                                                                        formData
                                                                    }) => {
 
-
+    const handleLogIn = async () => {
+        const res = await signIn("credentials", {
+            email: formData.email,
+            password: formData.password,
+            redirect: false,
+        });
+        console.log(res);
+        if (res?.error) {
+            // обработка ошибки
+            console.error("Ошибка авторизации:", res.error);
+        }
+    };
 
     return (
         <Box sx={sxBox}>
@@ -31,7 +43,6 @@ const RegistrationFormDump: React.FC<RegistrationFormDumpProps> = ({
 
             <form onSubmit={handleSubmit}>
                 <Box>
-
                     {fields.map(({ label, name, type }) => (
                         <Box key={name} sx={{ mb: 2 }}>
                             <TextField
@@ -45,15 +56,11 @@ const RegistrationFormDump: React.FC<RegistrationFormDumpProps> = ({
                         </Box>
                     ))}
 
-                    <Box>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                        >
+                    <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                        <Button size="lg" variant="black" >
                             Зарегистрироваться
                         </Button>
+                        <Button size="lg"  variant="black" onClick={handleLogIn}>Войти</Button>
                     </Box>
 
                 </Box>

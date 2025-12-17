@@ -1,0 +1,19 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+    container_name: nextjs-dev
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      WATCHPACK_POLLING: "true"  # Для горячей перезагрузки в Docker
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - .:/app              # Монтируем код для hot reload
+      - /app/node_modules   # Изолируем node_modules
+      - /app/.next         # Изолируем кэш сборки
+    command: npm run dev

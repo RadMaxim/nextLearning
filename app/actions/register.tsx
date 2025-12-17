@@ -1,5 +1,6 @@
 "use server"
 import {prisma} from "@/prisma/utils/prisma";
+import {saltAndHashPassword} from "@/prisma/utils/password";
 
 interface User {
 
@@ -8,11 +9,14 @@ interface User {
 }
 export async function registerUser(user: User) {
    const {email, password} = user
+
     try {
+
+       const pwHash = await saltAndHashPassword(password)
         const users = await prisma.user.create({
             data:{
                 email: email,
-                password: password,
+                password: pwHash,
             }
         })
         console.log(users)

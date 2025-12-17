@@ -1,10 +1,10 @@
 // RegistrationForm.tsx
 "use client"
 import React, {useCallback, useReducer} from "react";
-
-import RegistrationFormDump from "@/app/components/RegistrationForm/RegistrationFormDump";
-import {useRegisterUser} from "@/app/service/useRegisterUser";
 import {initialState, reducer} from "@/app/components/RegistrationForm/reducerRegistrtion";
+import {useRegisterUser} from "@/app/service/useRegisterUser";
+import RegistrationFormDump from "@/app/components/RegistrationForm/RegistrationFormDump";
+
 
 const RegistrationForm: React.FC = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -16,10 +16,10 @@ const RegistrationForm: React.FC = () => {
 
     const handleSubmit =useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
+
         dispatch({ type: "ERROR", message: "" });
         dispatch({ type: "SUCCESS", message: "" });
         const { name, email, password, confirmPassword } = state.formData;
-
         if (!name || !email || !password || !confirmPassword) {
             dispatch({ type: "ERROR", message: "Все поля обязательны для заполнения" });
             return;

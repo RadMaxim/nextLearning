@@ -1,12 +1,14 @@
 "use client"
 
 import React from "react";
-import ThemeSlider from "@/app/components/ThemeSlider/ThemeSlider";
 import {Box, Typography} from "@mui/material";
 import {usePathname} from "next/navigation";
 import {match} from 'path-to-regexp'
-import ItemNav from "@/app/components/Header/componentsHeader/ItemNav/ItemNav";
 import {navigation} from "@/app/components/Header/navigation";
+import ItemNav from "@/app/components/Header/componentsHeader/ItemNav/ItemNav";
+import ThemeSlider from "@/app/components/ThemeSlider/ThemeSlider";
+import {ModeToggle} from "@components/ModeToggle";
+
 
 
  const Header = () => {
@@ -23,7 +25,7 @@ import {navigation} from "@/app/components/Header/navigation";
                     <ItemNav page={page} key={page.href} isActive = {!!match(page.href) (location)} />
                 ))}
             </Box></Box>
-        <Box sx={{flex:2, pr:2, display:"flex", justifyContent:"end"}}><ThemeSlider/></Box>
+        <Box sx={{flex:2, pr:2, display:"flex", justifyContent:"end"}}><ModeToggle/></Box>
     </Box>
 )};
 export default React.memo(Header);
